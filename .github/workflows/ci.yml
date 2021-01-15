@@ -31,4 +31,7 @@ jobs:
         run: sh ./update-swagger-ui.sh
 
       - name: Build
-        run: sh ./gradlew build
+        uses: eskatos/gradle-command-action@v1
+          with:
+            gradle-version: 6.7
+            arguments: build
