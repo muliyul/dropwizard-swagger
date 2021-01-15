@@ -28,7 +28,7 @@ jobs:
           restore-keys: ${{ runner.os }}-gradle
 
       - name: Clone Swagger UI distro
-        run: sh ./${GITHUB_WORKSPACE}/update-swagger-ui.sh
+        run: sh ./update-swagger-ui.sh
 
       - name: Build
         run: ./gradlew build
