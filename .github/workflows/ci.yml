@@ -31,4 +31,4 @@ jobs:
         run: sh ./update-swagger-ui.sh
 
       - name: Build
-        run: ./gradlew build
+        run: sh ./gradlew build

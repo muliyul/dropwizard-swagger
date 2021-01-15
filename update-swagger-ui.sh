@@ -1,3 +1,5 @@
+#!/usr/bin/env sh
+
 rm -rf tmp
 git clone https://github.com/swagger-api/swagger-ui.git --no-checkout tmp --depth=1
 cd tmp || exit 1
