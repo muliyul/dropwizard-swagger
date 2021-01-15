@@ -30,7 +30,7 @@ jobs:
       - name: Clone Swagger UI distro
         run: |
         chmod +x ./${GITHUB_WORKSPACE}/update-swagger-ui.sh
-        ./${GITHUB_WORKSPACE}/update-swagger-ui.sh
+        "${GITHUB_WORKSPACE}/update-swagger-ui.sh"
 
       - name: Build
         run: ./gradlew build
