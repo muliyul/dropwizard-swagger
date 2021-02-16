@@ -1,47 +1,45 @@
 package com.muliyul.dropwizard.swagger
 
 import com.muliyul.dropwizard.swagger.ui.*
+import com.muliyul.dropwizard.swagger.ui.configuration.*
 import io.dropwizard.*
-import io.dropwizard.Configuration
 import io.dropwizard.assets.*
 import io.dropwizard.setup.*
 import io.swagger.v3.jaxrs2.integration.*
 import io.swagger.v3.jaxrs2.integration.resources.*
 
-class SwaggerBundle<C>(
-	private val resourcesPackageNames: Set<String>,
-	private val uiConfiguration: SwaggerUiConfiguration = SwaggerUiConfiguration()
-) : ConfiguredBundle<C> where C : Configuration, C : SwaggerConfiguration {
 
-	constructor(
-		vararg resourcesPackageNames: String,
-		uiConfiguration: SwaggerUiConfiguration = SwaggerUiConfiguration()
-	) : this(resourcesPackageNames.toSet(), uiConfiguration)
+class SwaggerBundle<C> @JvmOverloads constructor(
+	private vararg val resourcesPackageNames: String,
+	private val swaggerUiConfiguration: SwaggerUiConfiguration = SwaggerUiConfiguration()
+) : ConfiguredBundle<C> where C : Configuration, C : SwaggerBundleConfiguration {
 
 	override fun initialize(bootstrap: Bootstrap<*>) {
 		bootstrap.addBundle(AssetsBundle("/static/swagger-ui/", "/swagger-ui/", null, "swagger"))
 	}
 
 	override fun run(configuration: C, environment: Environment) {
+		val swaggerUiConfiguration = configuration.swaggerUiConfiguration ?: swaggerUiConfiguration
 
-		val servletConfig = environment.jerseyServletContainer!!.servletConfig
-		val swaggerConfiguration = configuration.swaggerConfiguration?.apply {
-			// TODO: check if dropwizard-auth is on the classpath
-			readerClass = AutoAuthReader::class.qualifiedName
-		}
+		val resourcesPackageNames = resourcesPackageNames.toSet()
 
-		environment.jersey().run {
-			JaxrsOpenApiContextBuilder<JaxrsOpenApiContextBuilder<*>>()
-				.servletConfig(servletConfig)
-				.application(resourceConfig)
-				.resourcePackages(resourcesPackageNames)
-				.openApiConfiguration(swaggerConfiguration)
-				.ctxId(ServletConfigContextUtils.getContextIdFromServletConfig(servletConfig))
-				.buildContext(true)
+		JaxrsOpenApiContextBuilder<JaxrsOpenApiContextBuilder<*>>()
+			.application(environment.jersey().resourceConfig)
+			.resourcePackages(resourcesPackageNames)
+			.buildContext(false)
+			.apply {
+				setOpenApiScanner(DropwizardCompatibleScanner())
+				setOpenApiReader(DropwizardCompatibleReader())
+			}
+			.init()
 
+		environment.jersey().apply {
 			register(AcceptHeaderOpenApiResource().resourcePackages(resourcesPackageNames))
 			register(OpenApiResource().resourcePackages(resourcesPackageNames))
-			register(SwaggerResource(environment.objectMapper, uiConfiguration))
+			if (!swaggerUiConfiguration.disabled) {
+				register(SwaggerResource(environment.objectMapper, swaggerUiConfiguration))
+			}
 		}
 	}
+
 }

@@ -5,7 +5,7 @@ import org.openqa.selenium.support.ui.*
 
 fun WebDriver.wait(timeoutInSeconds: Long) = WebDriverWait(this, timeoutInSeconds)
 
-fun <T> WebDriverWait.untilError(block: (WebDriver) -> T) = try {
+fun <T> WebDriverWait.untilError(block: (WebDriver) -> T): T = try {
 	until { block(it) }
 } catch (e: Throwable) {
 	throw Error(e)

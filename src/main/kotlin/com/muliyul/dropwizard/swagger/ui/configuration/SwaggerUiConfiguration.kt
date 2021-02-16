@@ -1,14 +1,19 @@
-package com.muliyul.dropwizard.swagger.ui
+package com.muliyul.dropwizard.swagger.ui.configuration
 
 import com.fasterxml.jackson.annotation.*
-import javax.ws.rs.*
+import com.muliyul.dropwizard.swagger.ui.*
 
+/**
+ * @see <a href=https://swagger.io/docs/open-source-tools/swagger-ui/usage/configuration/>Swagger-UI configuration</a>
+ */
 @JsonInclude(value = JsonInclude.Include.NON_NULL)
 class SwaggerUiConfiguration(
+	val disabled: Boolean = false,
+
 	// Core
 	val configUrl: String? = null,
 	val spec: Map<String, String>? = null,
-	url: JsOrString = """window.location.origin + '/openapi'""",
+	url: JsStringOrString = """window.location.origin + '/openapi'""",
 	val urls: List<String>? = null,
 
 	// Display
@@ -34,6 +39,7 @@ class SwaggerUiConfiguration(
 	val oauth2RedirectUrl: String? = null,
 	@field:JsonRawValue
 	val requestInterceptor: JsFunction? = null,
+//	TODO: these break the UI for some reason. not supported in the meantime.
 //	@field:JsonProperty("request.curlOptions")
 //	@field:JsonRawValue
 //	val curlOptions: JsOrString = JS_UNDEFINED,
@@ -66,6 +72,7 @@ class SwaggerUiConfiguration(
 //          SwaggerUIBundle.plugins.DownloadUrl
 //        ]"""
 ) {
+	@Suppress("unused")
 	@field:JsonProperty("dom_id")
 	private val domId: String = "#swagger-ui"
 
@@ -76,15 +83,9 @@ class SwaggerUiConfiguration(
 	}
 	// otherwise probably a path/url. wrap in quotes.
 	else "'$url'"
+
+	companion object {
+		@JvmStatic
+		fun builder() = Builder()
+	}
 }
-
-private const val JS_UNDEFINED = "undefined"
-
-// JavaScript concatenated string (window.location.origin + '/something') or plain string
-typealias JsOrString = String
-// function() {} or () => {}
-typealias JsFunction = String
-// [{}, GlobalObject...]
-typealias JsArrayOfObjects = String
-// any dom element to attach the ui to
-typealias JsElementRef = String

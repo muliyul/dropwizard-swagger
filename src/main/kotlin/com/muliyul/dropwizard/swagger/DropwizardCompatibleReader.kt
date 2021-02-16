@@ -3,17 +3,14 @@ package com.muliyul.dropwizard.swagger
 import com.fasterxml.jackson.annotation.*
 import io.dropwizard.auth.*
 import io.swagger.v3.jaxrs2.*
-import io.swagger.v3.oas.annotations.*
-import io.swagger.v3.oas.models.Operation
-import io.swagger.v3.oas.models.security.*
+import io.swagger.v3.oas.models.*
 import java.lang.reflect.*
 import javax.ws.rs.*
 
-open class AutoAuthReader : Reader() {
-	@Suppress("unused")
-	@field:Hidden
-	private val annHolder: String? = null
-
+/**
+ * This class instructs Swagger to ignore [Auth]
+ */
+open class DropwizardCompatibleReader : Reader() {
 	override fun getParameters(
 		type: Type?,
 		annotations: MutableList<Annotation>?,
@@ -24,7 +21,7 @@ open class AutoAuthReader : Reader() {
 	): ResolvedParameter {
 		val isAuthParam = annotations?.any { it.annotationClass == Auth::class } == true
 
-		return if (isAuthParam) super.getParameters(
+		return super.getParameters(
 			type,
 			annotations,
 			operation,
@@ -32,16 +29,8 @@ open class AutoAuthReader : Reader() {
 			methodConsumes,
 			jsonViewAnnotation
 		).apply {
-			// Instructs swagger-core to ignore this param as a body param
-			requestBody = null
+			// instructs Swagger to ignore Auth
+			if (isAuthParam) requestBody = null
 		}
-		else super.getParameters(
-			type,
-			annotations,
-			operation,
-			classConsumes,
-			methodConsumes,
-			jsonViewAnnotation
-		)
 	}
 }

@@ -18,37 +18,31 @@ java {
 
 dependencies {
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
-    testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
-
-    testImplementation platform("org.glassfish.jersey:jersey-bom:2.0+")
-    testImplementation("org.glassfish.jersey.ext:jersey-proxy-client")
 
     implementation platform("io.dropwizard:dropwizard-bom:2.0.17")
     implementation("io.dropwizard:dropwizard-core")
-//    implementation("io.dropwizard:dropwizard-client")
     implementation("io.dropwizard:dropwizard-assets")
     authImplementation("io.dropwizard:dropwizard-auth")
-    testImplementation("io.dropwizard:dropwizard-testing")
-
-//    implementation platform("com.fasterxml.jackson:jackson-bom:2.10+")
-//    implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
+//    implementation("io.dropwizard:dropwizard-client")
 
     implementation("io.swagger.core.v3:swagger-jaxrs2:2.1.2")
 
-    // Junit
+    // Test
+    testImplementation("io.dropwizard:dropwizard-testing")
+
+    testImplementation('org.seleniumhq.selenium:selenium-java:3.141.59')
+    testImplementation('io.github.bonigarcia:selenium-jupiter:3.3.5')
+
+    testImplementation platform("org.glassfish.jersey:jersey-bom:2.33")
+    testImplementation("org.glassfish.jersey.ext:jersey-proxy-client")
+    testImplementation("io.dropwizard:dropwizard-auth")
+
+
+    // JUnit
+    testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
     testImplementation platform("org.junit:junit-bom:5.7.0")
     testImplementation("org.junit.jupiter:junit-jupiter-api")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine")
-
-    testImplementation('org.seleniumhq.selenium:selenium-java:3.141.59')
-//    testImplementation('org.seleniumhq.selenium:selenium-chrome-driver:3.141.59')
-    // TODO: introduced in 4.0.0
-    //testImplementation('org.seleniumhq.selenium:selenium-chromium-driver:4.0.0')
-//    testImplementation('org.seleniumhq.selenium:selenium-firefox-driver:3.141.59')
-//    testImplementation('org.seleniumhq.selenium:selenium-ie-driver:3.141.59')
-//    testImplementation('org.seleniumhq.selenium:selenium-edge-driver:3.141.59')
-//    testImplementation('org.seleniumhq.selenium:selenium-opera-driver:3.141.59')
-    testImplementation('io.github.bonigarcia:selenium-jupiter:3.3.5')
 }
 
 compileKotlin {

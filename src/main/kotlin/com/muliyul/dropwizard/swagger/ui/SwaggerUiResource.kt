@@ -1,6 +1,7 @@
 package com.muliyul.dropwizard.swagger.ui
 
 import com.fasterxml.jackson.databind.*
+import com.muliyul.dropwizard.swagger.ui.configuration.*
 import io.swagger.v3.oas.annotations.*
 import javax.ws.rs.*
 import javax.ws.rs.core.*
@@ -8,7 +9,7 @@ import javax.ws.rs.core.*
 @Path("/swagger")
 class SwaggerResource(
 	private val mapper: ObjectMapper,
-	private val uiConfiguration: SwaggerUiConfiguration
+	private val swaggerUiConfiguration: SwaggerUiConfiguration
 ) {
 	@get:GET
 	@get:Consumes(MediaType.WILDCARD)
@@ -27,6 +28,6 @@ class SwaggerResource(
 		val (before, after) = swaggerUiConfigurationRegex.split(originalIndex, 2)
 
 		val prettyPrinter = mapper.writer().withDefaultPrettyPrinter()
-		"${before};var ui = SwaggerUIBundle(${prettyPrinter.writeValueAsString(uiConfiguration)});$after"
+		"${before}\r\nvar ui = SwaggerUIBundle(${prettyPrinter.writeValueAsString(swaggerUiConfiguration)});\r\n$after"
 	}
 }
