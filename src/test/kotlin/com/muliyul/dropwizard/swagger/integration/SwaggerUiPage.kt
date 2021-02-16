@@ -1,12 +1,10 @@
 package com.muliyul.dropwizard.swagger.integration
 
 import com.muliyul.dropwizard.swagger.ext.*
+import org.openqa.selenium.*
 import org.openqa.selenium.remote.*
 import org.openqa.selenium.support.*
 import org.openqa.selenium.support.ui.*
-
-import org.openqa.selenium.support.FindBy
-import org.openqa.selenium.WebElement
 
 
 class SwaggerUiPage(

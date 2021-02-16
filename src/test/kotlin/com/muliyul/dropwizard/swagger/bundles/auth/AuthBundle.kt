@@ -5,12 +5,9 @@ import io.dropwizard.*
 import io.dropwizard.auth.*
 import io.dropwizard.auth.basic.*
 import io.dropwizard.setup.*
-import io.dropwizard.auth.AuthValueFactoryProvider
 
 
-
-
-class AuthBundle<C: Configuration> : ConfiguredBundle<C> {
+class AuthBundle<C : Configuration> : ConfiguredBundle<C> {
 
 	override fun run(configuration: C, environment: Environment) {
 		environment.jersey().run {

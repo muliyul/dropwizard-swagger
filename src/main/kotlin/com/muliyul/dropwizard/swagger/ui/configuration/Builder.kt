@@ -31,7 +31,7 @@ class Builder {
 	private var oauth2RedirectUrl: String? = null
 	private var requestInterceptor: JsFunction? = null
 
-//	TODO: these break the UI for some reason. not supported in the meantime.
+	//	TODO: these break the UI for some reason. not supported in the meantime.
 //	@field:JsonProperty("request.curlOptions")
 //	@field:JsonRawValue
 //	var curlOptions: JsOrString = JS_UNDEFINED,

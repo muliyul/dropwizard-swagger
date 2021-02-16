@@ -5,7 +5,7 @@ import io.dropwizard.*
 import io.dropwizard.configuration.*
 import io.dropwizard.setup.*
 
-class TestKotlinApplication: Application<TestKotlinConfiguration>() {
+class TestKotlinApplication : Application<TestKotlinConfiguration>() {
 	override fun initialize(bootstrap: Bootstrap<TestKotlinConfiguration>) {
 		bootstrap.configurationSourceProvider = ResourceConfigurationSourceProvider()
 		bootstrap.addBundle(SwaggerBundle())

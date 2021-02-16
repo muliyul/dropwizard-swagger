@@ -4,6 +4,6 @@ import java.security.*
 
 class User(
 	private val username: String
-): Principal {
+) : Principal {
 	override fun getName(): String = username
 }
