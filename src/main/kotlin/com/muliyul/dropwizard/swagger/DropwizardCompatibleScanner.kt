@@ -7,7 +7,7 @@ private val ignoredPackages = setOf("com.papertrail.profiler", "org.glassfish.je
 
 private val delegate = JaxrsApplicationAndAnnotationScanner()
 
-class DropwizardCompatibleScanner : OpenApiScanner by delegate {
+open class DropwizardCompatibleScanner : OpenApiScanner by delegate {
 	override fun classes(): MutableSet<Class<*>> =
 		delegate.classes()
 			.filter { c -> ignoredPackages.none { p -> c.name.startsWith(p, ignoreCase = true) } }

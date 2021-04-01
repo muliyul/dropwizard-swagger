@@ -11,6 +11,7 @@ class SwaggerResource(
 	private val mapper: ObjectMapper,
 	private val swaggerUiConfiguration: SwaggerUiConfiguration
 ) {
+
 	@get:GET
 	@get:Consumes(MediaType.WILDCARD)
 	@get:Produces(MediaType.TEXT_HTML)
@@ -28,6 +29,8 @@ class SwaggerResource(
 		val (before, after) = swaggerUiConfigurationRegex.split(originalIndex, 2)
 
 		val prettyPrinter = mapper.writer().withDefaultPrettyPrinter()
-		"${before}\r\nvar ui = SwaggerUIBundle(${prettyPrinter.writeValueAsString(swaggerUiConfiguration)});\r\n$after"
+		val configurationJson = prettyPrinter.writeValueAsString(swaggerUiConfiguration)
+		"${before}\r\nvar ui = SwaggerUIBundle($configurationJson);\r\n$after"
 	}
+
 }

@@ -1,6 +1,7 @@
 package com.muliyul.dropwizard.swagger
 
 import io.dropwizard.auth.*
+import io.swagger.v3.oas.annotations.security.*
 import javax.ws.rs.*
 import javax.ws.rs.core.*
 
@@ -13,9 +14,10 @@ class TestResource {
 	fun sanity() = "Sanity check!"
 
 	@GET
-	@Path("/ignoring_auth")
+	@Path("/greeting")
 	@Consumes(MediaType.WILDCARD)
 	@Produces(MediaType.TEXT_PLAIN)
-	fun ignoringAuth(@Auth user: User) = "Hello ${user.name}!"
+	@SecurityRequirement(name = "api_key")
+	fun greeting(@Auth user: User) = "Hello ${user.name}!"
 }
 
